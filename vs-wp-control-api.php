@@ -17,6 +17,10 @@ define('VS_WP_CONTROL_VERSION', '0.3.1');
 define('VS_WP_CONTROL_FILE', __FILE__);
 define('VS_WP_CONTROL_DIR', plugin_dir_path(__FILE__));
 
+if (is_file(VS_WP_CONTROL_DIR . 'self-update.php')) {
+    require_once VS_WP_CONTROL_DIR . 'self-update.php';
+}
+
 require_once VS_WP_CONTROL_DIR . 'includes/class-vs-wp-control-auth.php';
 require_once VS_WP_CONTROL_DIR . 'includes/class-vs-wp-control-audit.php';
 require_once VS_WP_CONTROL_DIR . 'includes/class-vs-wp-control-plugins.php';
@@ -33,6 +37,7 @@ register_activation_hook(__FILE__, static function (): void {
 
 add_action('plugins_loaded', static function (): void {
     VS_WP_Control_Audit::init();
+    VS_WP_Control_Plugins::init();
     VS_WP_Control_REST::init();
     if (is_admin()) {
         VS_WP_Control_Admin::init();
